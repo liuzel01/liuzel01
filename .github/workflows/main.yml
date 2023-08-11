@@ -3,7 +3,7 @@ name: generate animation
 on:
   # run automatically every 24 hours
   schedule:
-    - cron: "0 */24 * * *" 
+    - cron: "0 0 */5 * *" 
   
   # allows to manually run the job at any time
   workflow_dispatch:
@@ -14,6 +14,17 @@ on:
     - main
     
 jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install -g bats
+      - run: bats -v
+
+
   generate:
     runs-on: ubuntu-latest
     timeout-minutes: 10
